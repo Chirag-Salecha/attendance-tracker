@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AttendFlow | Attendance Analytics System</title>
+<title>AttendFlow | Attendance Analytics Demo</title>
 
 <style>
 *{box-sizing:border-box}
 
 body{
     margin:0;
-    font-family:"Segoe UI",Arial,sans-serif;
+    font-family:"Segoe UI", Arial, sans-serif;
     background:#eef1f6;
-    color:#222;
+    color:#1f2937;
 }
 
 /* HEADER */
 .header{
-    background:#1f2937;
+    background:#111827;
     color:white;
     padding:25px;
     text-align:center;
@@ -27,29 +27,28 @@ body{
 }
 
 .header p{
-    margin:8px 0 0;
+    margin-top:8px;
     color:#cbd5e1;
 }
 
 /* MAIN */
 .container{
-    max-width:1100px;
+    max-width:1200px;
     margin:30px auto;
     padding:0 20px;
 }
 
-/* CARDS */
+/* CARD */
 .card{
     background:white;
     border-radius:14px;
     padding:25px;
-    margin-bottom:25px;
+    margin-bottom:30px;
     box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
 
 .card h3{
     margin-top:0;
-    color:#1f2937;
 }
 
 /* INPUT GRID */
@@ -84,11 +83,26 @@ button:hover{
     background:#1d4ed8;
 }
 
-/* STATUS */
-.status{
-    margin-top:15px;
-    line-height:1.7;
-    font-size:15px;
+/* CLASSIFICATION */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:20px;
+}
+
+.box{
+    padding:15px;
+    border-radius:10px;
+    background:#f9fafb;
+    min-height:120px;
+}
+
+.red{border-left:6px solid #dc2626;}
+.orange{border-left:6px solid #d97706;}
+.green{border-left:6px solid #15803d;}
+
+.box h4{
+    margin-top:0;
 }
 
 /* GRAPH */
@@ -97,16 +111,6 @@ canvas{
     background:#f9fafb;
     border-radius:10px;
     padding:10px;
-}
-
-/* INFO BOX */
-.info{
-    background:#f1f5f9;
-    padding:15px;
-    border-radius:10px;
-    font-size:14px;
-    margin-top:15px;
-    color:#334155;
 }
 
 /* FOOTER */
@@ -128,12 +132,13 @@ canvas{
 
 <div class="container">
 
+<!-- INPUT SECTION -->
 <div class="card">
     <h3>1. Attendance Data Input</h3>
     <p>
-        Attendance is represented symbolically using:
-        <b>P</b> (Present) and <b>A</b> (Absent).
-        This enables efficient string-based analysis.
+        Attendance representation:  
+        <b>P</b> = Present, <b>A</b> = Absent  
+        <br>Example: <code>P,A,A,A,P</code>
     </p>
 
     <div class="student">
@@ -154,23 +159,42 @@ canvas{
     </div>
 
     <button onclick="analyze()">Run Algorithm Analysis</button>
-
-    <div id="status" class="status"></div>
 </div>
 
+<!-- CLASSIFICATION SECTION -->
 <div class="card">
-    <h3>2. Attendance Percentage Visualization</h3>
-    <canvas id="chart" width="1000" height="350"></canvas>
+    <h3>2. Attendance Classification</h3>
 
-    <div class="info">
-        <b>Algorithm Insight:</b><br>
-        The system applies a <i>sliding window technique</i> of fixed size 3
-        combined with <i>string matching</i> to detect consecutive absences.
-        Attendance percentage is computed in linear time.
-        <br><br>
-        <b>Time Complexity:</b> O(n) per student<br>
-        <b>Space Complexity:</b> O(1)
+    <div class="grid">
+        <div class="box red">
+            <h4>Consecutive Absentees</h4>
+            <div id="consecutive"></div>
+        </div>
+
+        <div class="box orange">
+            <h4>Low Attendance</h4>
+            <div id="low"></div>
+        </div>
+
+        <div class="box green">
+            <h4>Normal Attendance</h4>
+            <div id="normal"></div>
+        </div>
     </div>
+</div>
+
+<!-- GRAPH SECTION -->
+<div class="card">
+    <h3>3. Attendance Percentage Visualization</h3>
+    <canvas id="chart" width="1100" height="350"></canvas>
+
+    <p style="margin-top:15px;font-size:14px;color:#475569;">
+        <b>Algorithm Insight:</b>  
+        Sliding Window (size = 3) + String Matching is used to detect consecutive absences.
+        Attendance percentage is computed in linear time.
+        <br><b>Time Complexity:</b> O(n) per student  
+        <br><b>Space Complexity:</b> O(1)
+    </p>
 </div>
 
 </div>
@@ -182,7 +206,10 @@ DAA Course Project • Student Attendance Pattern Tracker • KLE Technological 
 <script>
 function analyze(){
     let names=[], percentages=[];
-    let output="";
+
+    document.getElementById("consecutive").innerHTML="";
+    document.getElementById("low").innerHTML="";
+    document.getElementById("normal").innerHTML="";
 
     for(let i=1;i<=4;i++){
         let name=document.getElementById("name"+i).value || "Student "+i;
@@ -191,11 +218,11 @@ function analyze(){
 
         if(!/^[PA]+$/.test(s)) continue;
 
-        // Sliding Window Detection
-        let abnormal=false;
+        // Sliding Window for "AAA"
+        let hasAAA=false;
         for(let j=0;j<=s.length-3;j++){
             if(s.substring(j,j+3)==="AAA"){
-                abnormal=true;
+                hasAAA=true;
                 break;
             }
         }
@@ -204,28 +231,33 @@ function analyze(){
         for(let c of s) if(c==="P") present++;
         let percent=(present/s.length)*100;
 
-        output +=
-            "<b>"+name+"</b>: " +
-            (abnormal ? "Abnormal (Consecutive Absences)" :
-            percent<75 ? "Abnormal (Low Attendance)" :
-            "Normal") +
-            " — " + percent.toFixed(1) + "%<br>";
+        if(hasAAA){
+            document.getElementById("consecutive").innerHTML +=
+                name+" ("+percent.toFixed(1)+"%)<br>";
+        }
+        else if(percent < 75){
+            document.getElementById("low").innerHTML +=
+                name+" ("+percent.toFixed(1)+"%)<br>";
+        }
+        else{
+            document.getElementById("normal").innerHTML +=
+                name+" ("+percent.toFixed(1)+"%)<br>";
+        }
 
         names.push(name);
         percentages.push(percent);
     }
 
-    document.getElementById("status").innerHTML=output;
-    drawGraph(names,percentages);
+    drawGraph(names, percentages);
 }
 
-function drawGraph(names,values){
+function drawGraph(names, values){
     let c=document.getElementById("chart");
     let ctx=c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
 
     let barWidth=80;
-    let gap=60;
+    let gap=70;
     let startX=60;
     let maxHeight=230;
 
