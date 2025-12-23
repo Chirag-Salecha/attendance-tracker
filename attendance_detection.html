@@ -1,158 +1,246 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Abnormal Attendance Detection System</title>
+<title>AttendFlow | Attendance Analytics System</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
     margin:0;
-    font-family:Arial, sans-serif;
-    background:#f4f6fb;
-    padding:40px;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#eef1f6;
+    color:#222;
 }
 
-h1{
-    color:#243b55;
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.section{
-    background:white;
+/* HEADER */
+.header{
+    background:#1f2937;
+    color:white;
     padding:25px;
-    border-radius:10px;
+    text-align:center;
+}
+
+.header h1{
+    margin:0;
+    font-size:34px;
+}
+
+.header p{
+    margin:8px 0 0;
+    color:#cbd5e1;
+}
+
+/* MAIN */
+.container{
+    max-width:1100px;
+    margin:30px auto;
+    padding:0 20px;
+}
+
+/* CARDS */
+.card{
+    background:white;
+    border-radius:14px;
+    padding:25px;
     margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.card h3{
+    margin-top:0;
+    color:#1f2937;
+}
+
+/* INPUT GRID */
+.student{
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:12px;
+    margin-bottom:12px;
 }
 
 input{
-    width:100%;
     padding:12px;
-    margin-top:10px;
-    margin-bottom:15px;
-    font-size:15px;
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+    font-size:14px;
 }
 
 button{
-    padding:12px 25px;
-    font-weight:bold;
+    margin-top:15px;
+    padding:14px;
+    width:100%;
+    border:none;
+    border-radius:30px;
+    background:#2563eb;
+    color:white;
     font-size:15px;
+    font-weight:600;
     cursor:pointer;
 }
 
-.result{
-    margin-top:15px;
-    font-size:16px;
-    font-weight:bold;
+button:hover{
+    background:#1d4ed8;
 }
 
-pre{
-    background:#f0f2f7;
+/* STATUS */
+.status{
+    margin-top:15px;
+    line-height:1.7;
+    font-size:15px;
+}
+
+/* GRAPH */
+canvas{
+    margin-top:20px;
+    background:#f9fafb;
+    border-radius:10px;
+    padding:10px;
+}
+
+/* INFO BOX */
+.info{
+    background:#f1f5f9;
     padding:15px;
-    border-radius:8px;
-    overflow:auto;
+    border-radius:10px;
+    font-size:14px;
+    margin-top:15px;
+    color:#334155;
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    padding:15px;
+    color:#64748b;
+    font-size:13px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Abnormal Attendance Detection</h1>
-
-<div class="section">
-    <p>
-        This system detects abnormal attendance patterns using
-        algorithmic techniques from Design and Analysis of Algorithms.
-    </p>
-
-    <ul>
-        <li><b>P</b> – Present</li>
-        <li><b>A</b> – Absent</li>
-    </ul>
-
-    <p>
-        Enter attendance pattern (comma separated).<br>
-        Example: <code>P,A,A,A,P,P</code>
-    </p>
-
-    <input type="text" id="attendanceInput"
-           placeholder="Enter attendance pattern">
-
-    <button onclick="detectAbnormal()">Detect Attendance Pattern</button>
-
-    <div id="output" class="result"></div>
+<div class="header">
+    <h1>AttendFlow Analytics</h1>
+    <p>Algorithm-Driven Attendance Pattern Detection (DAA Demo)</p>
 </div>
 
-<div class="section">
-    <h3>Algorithm Used</h3>
-    <ul>
-        <li>Attendance represented as a string of symbols (P/A)</li>
-        <li>Sliding Window technique (window size = 3)</li>
-        <li>String matching to detect consecutive absences ("AAA")</li>
-        <li>Attendance percentage calculation</li>
-    </ul>
-    <p><b>Time Complexity:</b> O(n)</p>
-    <p><b>Space Complexity:</b> O(1)</p>
+<div class="container">
+
+<div class="card">
+    <h3>1. Attendance Data Input</h3>
+    <p>
+        Attendance is represented symbolically using:
+        <b>P</b> (Present) and <b>A</b> (Absent).
+        This enables efficient string-based analysis.
+    </p>
+
+    <div class="student">
+        <input id="name1" placeholder="Student 1 Name">
+        <input id="att1" placeholder="P,A,A,A,P">
+    </div>
+    <div class="student">
+        <input id="name2" placeholder="Student 2 Name">
+        <input id="att2" placeholder="P,P,P,A,P">
+    </div>
+    <div class="student">
+        <input id="name3" placeholder="Student 3 Name">
+        <input id="att3" placeholder="P,A,P,A,A">
+    </div>
+    <div class="student">
+        <input id="name4" placeholder="Student 4 Name">
+        <input id="att4" placeholder="P,P,P,P,P">
+    </div>
+
+    <button onclick="analyze()">Run Algorithm Analysis</button>
+
+    <div id="status" class="status"></div>
 </div>
 
-<div class="section">
-    <h3>Implementation Note</h3>
-    <p>
-        This live demo is implemented using JavaScript for browser execution.
-        The same algorithmic logic is implemented and analyzed using C++
-        in the project documentation.
-    </p>
+<div class="card">
+    <h3>2. Attendance Percentage Visualization</h3>
+    <canvas id="chart" width="1000" height="350"></canvas>
+
+    <div class="info">
+        <b>Algorithm Insight:</b><br>
+        The system applies a <i>sliding window technique</i> of fixed size 3
+        combined with <i>string matching</i> to detect consecutive absences.
+        Attendance percentage is computed in linear time.
+        <br><br>
+        <b>Time Complexity:</b> O(n) per student<br>
+        <b>Space Complexity:</b> O(1)
+    </div>
+</div>
+
+</div>
+
+<div class="footer">
+DAA Course Project • Student Attendance Pattern Tracker • KLE Technological University
 </div>
 
 <script>
-function detectAbnormal() {
-    let input = document.getElementById("attendanceInput").value.toUpperCase();
+function analyze(){
+    let names=[], percentages=[];
+    let output="";
 
-    // Remove commas and spaces
-    let attendanceStr = input.replace(/,/g, "").replace(/\s+/g, "");
+    for(let i=1;i<=4;i++){
+        let name=document.getElementById("name"+i).value || "Student "+i;
+        let input=document.getElementById("att"+i).value.toUpperCase();
+        let s=input.replace(/,/g,"").replace(/\s+/g,"");
 
-    // Validate input
-    if (!/^[PA]+$/.test(attendanceStr)) {
-        showResult("Invalid input. Use only P (Present) and A (Absent).", "red");
-        return;
-    }
+        if(!/^[PA]+$/.test(s)) continue;
 
-    // ---- SLIDING WINDOW + STRING MATCHING ----
-    let windowSize = 3;
-    for (let i = 0; i <= attendanceStr.length - windowSize; i++) {
-        let window = attendanceStr.substring(i, i + windowSize);
-
-        if (window === "AAA") {
-            showResult(
-                "Abnormal Attendance Detected: Consecutive Absences (AAA)",
-                "red"
-            );
-            return;
+        // Sliding Window Detection
+        let abnormal=false;
+        for(let j=0;j<=s.length-3;j++){
+            if(s.substring(j,j+3)==="AAA"){
+                abnormal=true;
+                break;
+            }
         }
+
+        let present=0;
+        for(let c of s) if(c==="P") present++;
+        let percent=(present/s.length)*100;
+
+        output +=
+            "<b>"+name+"</b>: " +
+            (abnormal ? "Abnormal (Consecutive Absences)" :
+            percent<75 ? "Abnormal (Low Attendance)" :
+            "Normal") +
+            " — " + percent.toFixed(1) + "%<br>";
+
+        names.push(name);
+        percentages.push(percent);
     }
 
-    // ---- LOW ATTENDANCE CHECK ----
-    let presentCount = 0;
-    for (let ch of attendanceStr) {
-        if (ch === "P") presentCount++;
-    }
-
-    let percentage = (presentCount / attendanceStr.length) * 100;
-
-    if (percentage < 75) {
-        showResult(
-            "Abnormal Attendance Detected: Low Attendance (" +
-            percentage.toFixed(2) + "%)",
-            "orange"
-        );
-    } else {
-        showResult("Attendance Pattern is Normal", "green");
-    }
+    document.getElementById("status").innerHTML=output;
+    drawGraph(names,percentages);
 }
 
-function showResult(message, color) {
-    let output = document.getElementById("output");
-    output.innerHTML = message;
-    output.style.color = color;
+function drawGraph(names,values){
+    let c=document.getElementById("chart");
+    let ctx=c.getContext("2d");
+    ctx.clearRect(0,0,c.width,c.height);
+
+    let barWidth=80;
+    let gap=60;
+    let startX=60;
+    let maxHeight=230;
+
+    ctx.font="14px Arial";
+    ctx.fillStyle="#1f2937";
+
+    for(let i=0;i<values.length;i++){
+        let h=(values[i]/100)*maxHeight;
+        let x=startX+i*(barWidth+gap);
+        let y=300-h;
+
+        ctx.fillRect(x,y,barWidth,h);
+        ctx.fillText(values[i].toFixed(1)+"%",x+20,y-8);
+        ctx.fillText(names[i],x,y+22);
+    }
 }
 </script>
 
