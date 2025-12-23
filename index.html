@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Attendance Pattern Tracker</title>
+
+<style>
+/* GENERAL */
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    line-height:1.6;
+    background:#f4f6fb;
+}
+
+/* HERO SECTION */
+.hero{
+    height:80vh;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:48px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+    margin:5px 0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:black;
+    padding:15px;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    position:sticky;
+    top:0;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.navbar a:hover{
+    text-decoration:underline;
+}
+
+/* SECTIONS */
+section{
+    padding:40px;
+}
+
+.section-title{
+    font-size:28px;
+    color:#243b55;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+/* PROJECT OVERVIEW */
+.project-box{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.tech-tags{
+    margin-top:15px;
+}
+
+.tag{
+    display:inline-block;
+    background:#f0f2f7;
+    color:#243b55;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+    margin:5px 6px 0 0;
+}
+
+.link-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+}
+
+/* FOOTER */
+footer{
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:15px;
+}
+/* TEAM SECTION */
+.team-section{
+    background:#eaf7f4;
+    padding:50px 40px;
+}
+
+.team-title{
+    text-align:center;
+    font-size:28px;
+    color:#243b55;
+    margin-bottom:10px;
+}
+
+.team-underline{
+    width:60px;
+    height:4px;
+    background:#243b55;
+    margin:10px auto 40px auto;
+}
+
+.team-container{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    gap:25px;
+}
+
+.team-card{
+    background:white;
+    width:220px;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.team-card h3{
+    margin:0;
+    color:#243b55;
+    font-size:18px;
+}
+
+.team-card p{
+    margin-top:8px;
+    color:#333;
+    font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<header class="hero" id="home">
+    <h1>Student Attendance Pattern Tracker</h1>
+    <p>Design and Analysis of Algorithms – Course Project</p>
+    <p>KLE Technological University</p>
+</header>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="#home">Home</a>
+    <a href="#team">Team</a>
+    
+    <a href="#course">Course</a>
+    <a href="#intro">Introduction</a>
+    <a href="#project">Project</a>
+    <a href="#outcomes">Learning Outcomes</a>
+    <a href="#business">Business Case</a>
+    <a href="#contact">Contact</a>
+</nav>
+<section id="team" class="team-section">
+
+<h2 class="team-title">Team Algorithmic Minds</h2>
+<div class="team-underline"></div>
+
+<div class="team-container">
+
+    <div class="team-card">
+        <h3>Chirag Salecha</h3>
+        <p>CS (AI) Student</p>
+    </div>
+
+    <div class="team-card">
+        <h3>Achyuth RH</h3>
+        <p>CS (AI) Student</p>
+    </div>
+
+    <div class="team-card">
+        <h3>Shridevi VD</h3>
+        <p>CS (AI) Student</p>
+    </div>
+
+    <div class="team-card">
+        <h3>Prajwal VB</h3>
+        <p>CS (AI) Student</p>
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- COURSE -->
+<section id="course">
+    <h2 class="section-title">Course</h2>
+    <div class="card">
+        <b>Course Name:</b> Design and Analysis of Algorithms (DAA)<br><br>
+        The course focuses on algorithm design techniques, complexity analysis,
+        and efficient problem-solving strategies.
+    </div>
+</section>
+
+<!-- COURSE INTRO -->
+<section id="intro">
+    <h2 class="section-title">Course Project Introduction</h2>
+    <div class="card">
+        The complete course project introduction is documented independently
+        to clearly explain the academic motivation, objectives, and scope.<br><br>
+        <a href="course_introduction.html" target="_blank"><b>Open Introduction</b></a>
+    </div>
+</section>
+
+<!-- PROJECT OVERVIEW -->
+<section id="project">
+    <h2 class="section-title">Project Overview</h2>
+
+    <div class="project-box">
+        <h3>Student Attendance Pattern Tracker</h3>
+        <p>
+            An algorithm-driven academic monitoring system designed to analyze
+            attendance records and identify meaningful patterns such as consecutive
+            absences and declining attendance trends using DAA principles.
+        </p>
+
+        <div class="tech-tags">
+            <span class="tag">C++</span>
+            <span class="tag">DAA</span>
+            <span class="tag">Time Complexity</span>
+            <span class="tag">Pattern Detection</span>
+            <span class="tag">Algorithm Design</span>
+        </div>
+    </div>
+
+    <div class="link-box">
+        <a href="project_overview.html" target="_blank">
+            Explore Project Insight Framework →
+        </a>
+    </div>
+</section>
+
+<!-- LEARNING OUTCOMES -->
+<section id="outcomes">
+    <h2 class="section-title">Learning Outcomes</h2>
+
+    <div class="card">
+        <b>Chirag & Achyuth</b><br>
+        Algorithm Foundations & Analysis<br><br>
+        <small>
+            Focuses on algorithm efficiency, time and space complexity,
+            and foundational problem-solving techniques.
+        </small><br><br>
+        <a href="outcome_om_style.html" target="_blank">Outcome–1</a>
+    </div>
+
+    <div class="card">
+        <b>Prajwal & Shridevi</b><br>
+        Design Techniques & Applications<br><br>
+        <small>
+            Covers algorithm design paradigms such as greedy methods,
+            sorting algorithms, and real-world applications.
+        </small><br><br>
+        <a href="outcome_siddharth.html" target="_blank">Outcome–2</a>
+    </div>
+</section>
+
+<!-- BUSINESS CASE -->
+<section id="business">
+    <h2 class="section-title">Business Case</h2>
+
+    <div class="card">
+        <p><b>Business Case Summary:</b></p>
+        <ul>
+            <li>Detection of students with consecutive absences</li>
+            <li>Identification of low attendance percentage</li>
+            <li>Attendance trend analysis over time</li>
+        </ul>
+
+        <p style="margin-top:15px;">
+            <a href="business_case.html" target="_blank">
+                View Detailed Business Case Document →
+            </a>
+        </p>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <div class="card">
+        <b>Team:</b> Team Algorithmic Minds<br>
+        <b>Members:</b> Chirag Salecha, Achyuth RH, Prajwal VB, Shridevi VD<br>
+        <b>Guide:</b> Pradeep Shet Sir<br>
+        <b>Department:</b> Computer Science (AI)<br>
+        <b>College:</b> KLE Technological University<br>
+        <b>Email:</b> chiragsalecha625@gmail.com
+    </div>
+</section>
+
+<footer>
+© 2025 | DAA Course Project | Team Algorithmic Minds
+</footer>
+
+</body>
+</html>

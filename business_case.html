@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Business Case – Student Attendance Pattern Tracker</title>
+
+<style>
+body{
+    margin:0;
+    padding:60px;
+    font-family:Arial, sans-serif;
+    line-height:1.8;
+    background:#f4f6fb;
+}
+
+h1{
+    color:#243b55;
+    margin-bottom:10px;
+}
+
+h2{
+    color:#243b55;
+    margin-top:40px;
+}
+
+h3{
+    color:#243b55;
+    margin-top:25px;
+}
+
+.section{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    margin-bottom:30px;
+}
+
+.case-box{
+    background:#f0f2f7;
+    padding:20px;
+    border-left:6px solid #243b55;
+    margin-top:15px;
+}
+
+ul{
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Business Case</h1>
+<p><b>Project:</b> Student Attendance Pattern Tracker</p>
+<p><b>Course:</b> Design and Analysis of Algorithms (DAA)</p>
+<p><b>Institution:</b> KLE Technological University</p>
+
+<div class="section">
+<h2>1. Introduction</h2>
+<p>
+Educational institutions generate large volumes of student attendance data on a
+daily basis. Analyzing this data manually is time-consuming and prone to errors,
+especially in large classrooms. There is a clear need for an automated,
+algorithm-driven solution to analyze attendance patterns efficiently.
+</p>
+</div>
+
+<div class="section">
+<h2>2. Business Problem</h2>
+<p>
+Faculty members need timely insights into student attendance behavior, such as:
+</p>
+<ul>
+<li>Students with consecutive absences</li>
+<li>Students falling below minimum attendance requirements</li>
+<li>Irregular attendance trends over time</li>
+</ul>
+<p>
+Without algorithmic analysis, these patterns may go unnoticed until academic
+performance is negatively affected.
+</p>
+</div>
+
+<div class="section">
+<h2>3. Proposed Solution</h2>
+<div class="case-box">
+The Student Attendance Pattern Tracker applies Design and Analysis of Algorithms
+principles to efficiently process attendance records, detect meaningful patterns,
+and generate academic insights that support early intervention and informed
+decision-making.
+</div>
+</div>
+
+<div class="section">
+<h2>4. Individual Business Scenarios & Algorithmic Mapping</h2>
+
+<h3>Scenario 1 – Consecutive Absence Detection (Chirag Salecha)</h3>
+<ul>
+<li><b>Problem:</b> Identify students absent for multiple consecutive days</li>
+<li><b>Data Structure:</b> Arrays</li>
+<li><b>Algorithm:</b> Linear traversal</li>
+<li><b>Time Complexity:</b> O(n)</li>
+</ul>
+
+<h3>Scenario 2 – Low Attendance Percentage Analysis (Achyuth RH)</h3>
+<ul>
+<li><b>Problem:</b> Identify students below the required attendance threshold</li>
+<li><b>Data Structure:</b> Arrays, Hash Maps</li>
+<li><b>Algorithm:</b> Frequency counting</li>
+<li><b>Time Complexity:</b> O(n)</li>
+</ul>
+
+<h3>Scenario 3 – Attendance Trend Monitoring (Shridevi VD)</h3>
+<ul>
+<li><b>Problem:</b> Analyze consistency of attendance over time</li>
+<li><b>Data Structure:</b> Arrays</li>
+<li><b>Algorithm:</b> Sliding window technique</li>
+<li><b>Time Complexity:</b> O(n)</li>
+</ul>
+
+<h3>Scenario 4 – Attendance Ranking & Classification (Prajwal VB)</h3>
+<ul>
+<li><b>Problem:</b> Rank students based on attendance regularity</li>
+<li><b>Data Structure:</b> Arrays</li>
+<li><b>Algorithm:</b> Sorting algorithms</li>
+<li><b>Time Complexity:</b> O(n log n)</li>
+</ul>
+
+</div>
+
+<div class="section">
+<h2>5. Business Benefits</h2>
+<ul>
+<li>Early identification of academically at-risk students</li>
+<li>Reduction in manual effort for faculty</li>
+<li>Improved monitoring of student engagement</li>
+<li>Scalable solution for large datasets</li>
+<li>Data-driven academic decision making</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>6. Financial Analysis</h2>
+<p>
+The Student Attendance Pattern Tracker is a cost-effective solution since it
+primarily relies on algorithmic processing rather than expensive hardware
+or third-party software tools.
+</p>
+
+<ul>
+<li><b>Development Cost:</b> Minimal, as the system uses C++ and basic data structures</li>
+<li><b>Infrastructure Cost:</b> Low, can run on existing institutional systems</li>
+<li><b>Operational Cost:</b> Negligible, requires minimal computational resources</li>
+<li><b>Manual Effort Reduction:</b> Significant reduction in faculty workload</li>
+</ul>
+
+<p>
+By automating attendance analysis, institutions can reduce administrative effort,
+improve monitoring accuracy, and prevent academic issues early—leading to long-term
+cost savings.
+</p>
+</div>
+
+<div class="section">
+<h2>7. Implementation Plan</h2>
+
+<ul>
+<li><b>Phase 1 – Data Collection:</b> Collect attendance records in structured format (arrays/files)</li>
+<li><b>Phase 2 – Algorithm Design:</b> Identify patterns such as consecutive absences and low attendance</li>
+<li><b>Phase 3 – Implementation:</b> Implement algorithms using C++</li>
+<li><b>Phase 4 – Complexity Analysis:</b> Evaluate time and space complexity</li>
+<li><b>Phase 5 – Testing:</b> Validate results using sample datasets</li>
+<li><b>Phase 6 – Deployment:</b> Integrate with academic monitoring systems</li>
+</ul>
+
+<p>
+This phased approach ensures correctness, scalability, and efficient execution
+of the attendance analysis algorithms.
+</p>
+</div>
+
+<div class="section">
+<h2>8. Sample Code Example</h2>
+<p>
+The following C++ code demonstrates a simple algorithm to detect consecutive
+absences using linear traversal. This algorithm runs in O(n) time complexity.
+</p>
+
+<pre style="background:#f0f2f7; padding:20px; border-radius:8px;">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n = 7;
+    int attendance[] = {1, 0, 0, 0, 1, 0, 1}; 
+    // 1 = Present, 0 = Absent
+
+    int consecutiveAbsences = 0;
+
+    for(int i = 0; i &lt; n; i++) {
+        if(attendance[i] == 0) {
+            consecutiveAbsences++;
+            if(consecutiveAbsences >= 3) {
+                cout << "Alert: Student has consecutive absences!" << endl;
+                break;
+            }
+        } else {
+            consecutiveAbsences = 0;
+        }
+    }
+
+    return 0;
+}
+</pre>
+
+<p>
+This example demonstrates how basic algorithmic techniques such as iteration
+and conditional logic can be applied to solve real-world academic problems efficiently.
+</p>
+</div>
+
+
+
+
+<div class="section">
+<h2>9. Real-World Applicability</h2>
+<p>
+The proposed solution can be applied in schools, colleges, universities, and
+online learning platforms to monitor attendance behavior efficiently and support
+academic success.
+</p>
+</div>
+
+<div class="section">
+<h2>10. Conclusion</h2>
+<p>
+The Business Case demonstrates how algorithmic thinking and efficient data
+structures can be applied to solve real-world academic problems. The Student
+Attendance Pattern Tracker highlights the practical relevance of Design and
+Analysis of Algorithms in improving efficiency, scalability, and decision-making
+in educational systems.
+</p>
+</div>
+
+</body>
+</html>
