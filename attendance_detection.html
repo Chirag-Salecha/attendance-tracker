@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Abnormal Attendance Detection System</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6fb;
+    padding:40px;
+}
+
+h1{
+    color:#243b55;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.section{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+button{
+    padding:12px 25px;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.result{
+    margin-top:15px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+pre{
+    background:#f0f2f7;
+    padding:15px;
+    border-radius:8px;
+    overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Abnormal Attendance Detection</h1>
+
+<div class="section">
+    <p>
+        This system detects abnormal attendance patterns using
+        algorithmic techniques from Design and Analysis of Algorithms.
+    </p>
+
+    <ul>
+        <li><b>P</b> – Present</li>
+        <li><b>A</b> – Absent</li>
+    </ul>
+
+    <p>
+        Enter attendance pattern (comma separated).<br>
+        Example: <code>P,A,A,A,P,P</code>
+    </p>
+
+    <input type="text" id="attendanceInput"
+           placeholder="Enter attendance pattern">
+
+    <button onclick="detectAbnormal()">Detect Attendance Pattern</button>
+
+    <div id="output" class="result"></div>
+</div>
+
+<div class="section">
+    <h3>Algorithm Used</h3>
+    <ul>
+        <li>Attendance represented as a string of symbols (P/A)</li>
+        <li>Sliding Window technique (window size = 3)</li>
+        <li>String matching to detect consecutive absences ("AAA")</li>
+        <li>Attendance percentage calculation</li>
+    </ul>
+    <p><b>Time Complexity:</b> O(n)</p>
+    <p><b>Space Complexity:</b> O(1)</p>
+</div>
+
+<div class="section">
+    <h3>Implementation Note</h3>
+    <p>
+        This live demo is implemented using JavaScript for browser execution.
+        The same algorithmic logic is implemented and analyzed using C++
+        in the project documentation.
+    </p>
+</div>
+
+<script>
+function detectAbnormal() {
+    let input = document.getElementById("attendanceInput").value.toUpperCase();
+
+    // Remove commas and spaces
+    let attendanceStr = input.replace(/,/g, "").replace(/\s+/g, "");
+
+    // Validate input
+    if (!/^[PA]+$/.test(attendanceStr)) {
+        showResult("Invalid input. Use only P (Present) and A (Absent).", "red");
+        return;
+    }
+
+    // ---- SLIDING WINDOW + STRING MATCHING ----
+    let windowSize = 3;
+    for (let i = 0; i <= attendanceStr.length - windowSize; i++) {
+        let window = attendanceStr.substring(i, i + windowSize);
+
+        if (window === "AAA") {
+            showResult(
+                "Abnormal Attendance Detected: Consecutive Absences (AAA)",
+                "red"
+            );
+            return;
+        }
+    }
+
+    // ---- LOW ATTENDANCE CHECK ----
+    let presentCount = 0;
+    for (let ch of attendanceStr) {
+        if (ch === "P") presentCount++;
+    }
+
+    let percentage = (presentCount / attendanceStr.length) * 100;
+
+    if (percentage < 75) {
+        showResult(
+            "Abnormal Attendance Detected: Low Attendance (" +
+            percentage.toFixed(2) + "%)",
+            "orange"
+        );
+    } else {
+        showResult("Attendance Pattern is Normal", "green");
+    }
+}
+
+function showResult(message, color) {
+    let output = document.getElementById("output");
+    output.innerHTML = message;
+    output.style.color = color;
+}
+</script>
+
+</body>
+</html>
