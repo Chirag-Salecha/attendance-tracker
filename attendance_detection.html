@@ -158,7 +158,7 @@ canvas{
         <input id="att4" placeholder="P,P,P,P,P">
     </div>
 
-    <button onclick="analyze()">Run Algorithm Analysis</button>
+    <button onclick="analyze()">Detect Pattern</button>
 </div>
 
 <!-- CLASSIFICATION SECTION -->
@@ -251,30 +251,77 @@ function analyze(){
     drawGraph(names, percentages);
 }
 
+
 function drawGraph(names, values){
-    let c=document.getElementById("chart");
-    let ctx=c.getContext("2d");
+    let c = document.getElementById("chart");
+    let ctx = c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
 
-    let barWidth=80;
-    let gap=70;
-    let startX=60;
-    let maxHeight=230;
+    let graphLeft = 80;
+    let graphBottom = 300;
+    let graphTop = 50;
+    let graphRight = 1050;
 
-    ctx.font="14px Arial";
-    ctx.fillStyle="#1f2937";
+    let maxHeight = graphBottom - graphTop;
+
+    // Draw axes
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+
+    // Y-axis
+    ctx.beginPath();
+    ctx.moveTo(graphLeft, graphTop);
+    ctx.lineTo(graphLeft, graphBottom);
+    ctx.stroke();
+
+    // X-axis
+    ctx.beginPath();
+    ctx.moveTo(graphLeft, graphBottom);
+    ctx.lineTo(graphRight, graphBottom);
+    ctx.stroke();
+
+    // Y-axis labels
+    ctx.font = "13px Arial";
+    ctx.fillStyle = "#000";
+    for(let i=0;i<=100;i+=25){
+        let y = graphBottom - (i/100)*maxHeight;
+        ctx.fillText(i + "%", 30, y+5);
+
+        ctx.strokeStyle = "#ccc";
+        ctx.beginPath();
+        ctx.moveTo(graphLeft, y);
+        ctx.lineTo(graphRight, y);
+        ctx.stroke();
+    }
+
+    // Axis titles
+    ctx.fillStyle = "#000";
+    ctx.font = "14px Arial";
+    ctx.fillText("Attendance Percentage (%)", 10, graphTop - 15);
+    ctx.fillText("Students", graphRight - 80, graphBottom + 40);
+
+    // Bars
+    let barWidth = 80;
+    let gap = 70;
 
     for(let i=0;i<values.length;i++){
-        let h=(values[i]/100)*maxHeight;
-        let x=startX+i*(barWidth+gap);
-        let y=300-h;
+        let barHeight = (values[i]/100)*maxHeight;
+        let x = graphLeft + 50 + i*(barWidth + gap);
+        let y = graphBottom - barHeight;
 
-        ctx.fillRect(x,y,barWidth,h);
-        ctx.fillText(values[i].toFixed(1)+"%",x+20,y-8);
-        ctx.fillText(names[i],x,y+22);
+        ctx.fillStyle = "#1f2937";
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        // Percentage on top of bar
+        ctx.fillStyle = "#000";
+        ctx.fillText(values[i].toFixed(1) + "%", x+18, y-8);
+
+        // Student name below bar
+        ctx.fillText(names[i], x, graphBottom + 20);
     }
 }
 </script>
+
 
 </body>
 </html>
