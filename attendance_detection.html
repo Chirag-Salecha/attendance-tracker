@@ -21,15 +21,8 @@ body{
     text-align:center;
 }
 
-.header h1{
-    margin:0;
-    font-size:34px;
-}
-
-.header p{
-    margin-top:8px;
-    color:#cbd5e1;
-}
+.header h1{ margin:0; font-size:34px; }
+.header p{ margin-top:8px; color:#cbd5e1; }
 
 /* MAIN */
 .container{
@@ -47,9 +40,7 @@ body{
     box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
 
-.card h3{
-    margin-top:0;
-}
+.card h3{ margin-top:0; }
 
 /* INPUT GRID */
 .student{
@@ -67,21 +58,18 @@ input{
 }
 
 button{
-    margin-top:15px;
-    padding:14px;
-    width:100%;
+    margin-top:8px;
+    padding:10px 16px;
     border:none;
-    border-radius:30px;
+    border-radius:20px;
     background:#2563eb;
     color:white;
-    font-size:15px;
+    font-size:14px;
     font-weight:600;
     cursor:pointer;
 }
 
-button:hover{
-    background:#1d4ed8;
-}
+button:hover{ background:#1d4ed8; }
 
 /* CLASSIFICATION */
 .grid{
@@ -94,15 +82,22 @@ button:hover{
     padding:15px;
     border-radius:10px;
     background:#f9fafb;
-    min-height:120px;
+    min-height:160px;
 }
 
 .red{border-left:6px solid #dc2626;}
 .orange{border-left:6px solid #d97706;}
 .green{border-left:6px solid #15803d;}
 
-.box h4{
-    margin-top:0;
+.box h4{ margin-top:0; }
+
+/* MESSAGE PREVIEW */
+.msg-box{
+    background:#eef2ff;
+    padding:8px;
+    border-radius:6px;
+    font-size:13px;
+    margin:6px 0;
 }
 
 /* GRAPH */
@@ -127,19 +122,16 @@ canvas{
 
 <div class="header">
     <h1>AttendFlow Analytics</h1>
-    <p>Algorithm-Driven Attendance Pattern Detection </p>
+    <p>Algorithm-Driven Attendance Pattern Detection</p>
 </div>
 
 <div class="container">
 
-<!-- INPUT SECTION -->
+<!-- INPUT -->
 <div class="card">
     <h3>1. Attendance Data Input</h3>
-    <p>
-        Attendance representation:  
-        <b>P</b> = Present, <b>A</b> = Absent  
-        <br>Example: <code>P,A,A,A,P</code>
-    </p>
+    <p><b>P</b> = Present, <b>A</b> = Absent<br>
+       Example: <code>P,A,A,A,P</code></p>
 
     <div class="student">
         <input id="name1" placeholder="Student 1 Name">
@@ -158,12 +150,12 @@ canvas{
         <input id="att4" placeholder="P,P,P,P,P">
     </div>
 
-    <button onclick="analyze()">Detect Pattern</button>
+    <button onclick="analyze()">DETECT ATTENDANCE</button>
 </div>
 
-<!-- CLASSIFICATION SECTION -->
+<!-- CLASSIFICATION -->
 <div class="card">
-    <h3>2. Attendance Classification</h3>
+    <h3>2. Attendance Classification & SMS Notification</h3>
 
     <div class="grid">
         <div class="box red">
@@ -183,17 +175,16 @@ canvas{
     </div>
 </div>
 
-<!-- GRAPH SECTION -->
+<!-- GRAPH -->
 <div class="card">
     <h3>3. Attendance Percentage Visualization</h3>
     <canvas id="chart" width="1100" height="350"></canvas>
 
-    <p style="margin-top:15px;font-size:14px;color:#475569;">
-        <b>Algorithm Insight:</b>  
-        Sliding Window (size = 3) + String Matching is used to detect consecutive absences.
-        Attendance percentage is computed in linear time.
-        <br><b>Time Complexity:</b> O(n) per student  
-        <br><b>Space Complexity:</b> O(1)
+    <p style="font-size:14px;color:#475569;">
+        <b>Algorithm Insight:</b><br>
+        Sliding Window (size = 3) detects consecutive absences.
+        Linear traversal computes attendance percentage.<br>
+        <b>Time:</b> O(n) &nbsp;&nbsp; <b>Space:</b> O(1)
     </p>
 </div>
 
@@ -205,7 +196,7 @@ DAA Course Project • Student Attendance Pattern Tracker • KLE Technological 
 
 <script>
 function analyze(){
-    let names=[], percentages=[];
+    let names=[], values=[], categories=[];
 
     document.getElementById("consecutive").innerHTML="";
     document.getElementById("low").innerHTML="";
@@ -213,18 +204,14 @@ function analyze(){
 
     for(let i=1;i<=4;i++){
         let name=document.getElementById("name"+i).value || "Student "+i;
-        let input=document.getElementById("att"+i).value.toUpperCase();
-        let s=input.replace(/,/g,"").replace(/\s+/g,"");
+        let s=document.getElementById("att"+i).value.toUpperCase()
+              .replace(/,/g,"").replace(/\s+/g,"");
 
         if(!/^[PA]+$/.test(s)) continue;
 
-        // Sliding Window for "AAA"
         let hasAAA=false;
         for(let j=0;j<=s.length-3;j++){
-            if(s.substring(j,j+3)==="AAA"){
-                hasAAA=true;
-                break;
-            }
+            if(s.substring(j,j+3)==="AAA"){ hasAAA=true; break; }
         }
 
         let present=0;
@@ -232,96 +219,99 @@ function analyze(){
         let percent=(present/s.length)*100;
 
         if(hasAAA){
-            document.getElementById("consecutive").innerHTML +=
-                name+" ("+percent.toFixed(1)+"%)<br>";
+            document.getElementById("consecutive").innerHTML+=
+            studentBlock(name,percent,"Consecutive Absentee");
+            categories.push("consecutive");
         }
-        else if(percent < 75){
-            document.getElementById("low").innerHTML +=
-                name+" ("+percent.toFixed(1)+"%)<br>";
+        else if(percent<75){
+            document.getElementById("low").innerHTML+=
+            studentBlock(name,percent,"Low Attendance");
+            categories.push("low");
         }
         else{
-            document.getElementById("normal").innerHTML +=
-                name+" ("+percent.toFixed(1)+"%)<br>";
+            document.getElementById("normal").innerHTML+=
+            `<b>${name}</b> (${percent.toFixed(1)}%)<hr>`;
+            categories.push("normal");
         }
 
         names.push(name);
-        percentages.push(percent);
+        values.push(percent);
     }
 
-    drawGraph(names, percentages);
+    drawGraph(names,values,categories);
 }
 
+function studentBlock(name,percent,category){
+    let message =
+        "Attendance Alert:\n" +
+        "Student: " + name + "\n" +
+        "Category: " + category + "\n" +
+        "Attendance: " + percent.toFixed(1) + "%\n" +
+        "Please take necessary action.";
 
-function drawGraph(names, values){
-    let c = document.getElementById("chart");
-    let ctx = c.getContext("2d");
+    return `
+    <b>${name}</b> (${percent.toFixed(1)}%)<br>
+
+    <div class="msg-box">
+        <b>SMS Preview:</b><br>
+        ${message.replace(/\n/g,"<br>")}
+    </div>
+
+    <button onclick="sendSMS('${name}', \`${message}\`)">
+        Send Message
+    </button>
+
+    <div id="status_${name}" style="font-size:13px;color:green;"></div>
+    <hr>`;
+}
+
+function sendSMS(name,message){
+    document.getElementById("status_"+name).innerHTML =
+        "✅ Message Sent Successfully";
+
+    alert("SMS SENT (Demo):\n\n" + message);
+}
+
+/* GRAPH */
+function drawGraph(names,values,categories){
+    let c=document.getElementById("chart");
+    let ctx=c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
 
-    let graphLeft = 80;
-    let graphBottom = 300;
-    let graphTop = 50;
-    let graphRight = 1050;
+    let left=90, right=1050, top=50, bottom=300;
+    let height=bottom-top;
 
-    let maxHeight = graphBottom - graphTop;
+    ctx.strokeStyle="#000"; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(left,top); ctx.lineTo(left,bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(left,bottom); ctx.lineTo(right,bottom); ctx.stroke();
 
-    // Draw axes
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = 2;
-
-    // Y-axis
-    ctx.beginPath();
-    ctx.moveTo(graphLeft, graphTop);
-    ctx.lineTo(graphLeft, graphBottom);
-    ctx.stroke();
-
-    // X-axis
-    ctx.beginPath();
-    ctx.moveTo(graphLeft, graphBottom);
-    ctx.lineTo(graphRight, graphBottom);
-    ctx.stroke();
-
-    // Y-axis labels
-    ctx.font = "13px Arial";
-    ctx.fillStyle = "#000";
+    ctx.font="13px Arial"; ctx.fillStyle="#000";
     for(let i=0;i<=100;i+=25){
-        let y = graphBottom - (i/100)*maxHeight;
-        ctx.fillText(i + "%", 30, y+5);
-
-        ctx.strokeStyle = "#ccc";
-        ctx.beginPath();
-        ctx.moveTo(graphLeft, y);
-        ctx.lineTo(graphRight, y);
-        ctx.stroke();
+        let y=bottom-(i/100)*height;
+        ctx.fillText(i+"%",40,y+5);
+        ctx.strokeStyle="#ddd";
+        ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(right,y); ctx.stroke();
     }
 
-    // Axis titles
-    ctx.fillStyle = "#000";
-    ctx.font = "14px Arial";
-    ctx.fillText("Attendance Percentage (%)", 10, graphTop - 15);
-    ctx.fillText("Students", graphRight - 80, graphBottom + 40);
-
-    // Bars
-    let barWidth = 80;
-    let gap = 70;
-
+    let barWidth=80, gap=70;
     for(let i=0;i<values.length;i++){
-        let barHeight = (values[i]/100)*maxHeight;
-        let x = graphLeft + 50 + i*(barWidth + gap);
-        let y = graphBottom - barHeight;
+        let h=(values[i]/100)*height;
+        let x=left+40+i*(barWidth+gap);
+        let y=bottom-h;
 
-        ctx.fillStyle = "#1f2937";
-        ctx.fillRect(x, y, barWidth, barHeight);
+        let color=
+            categories[i]==="consecutive"?"#dc2626":
+            categories[i]==="low"?"#d97706":"#15803d";
 
-        // Percentage on top of bar
-        ctx.fillStyle = "#000";
-        ctx.fillText(values[i].toFixed(1) + "%", x+18, y-8);
+        ctx.fillStyle=color;
+        ctx.fillRect(x,y,barWidth,h);
 
-        // Student name below bar
-        ctx.fillText(names[i], x, graphBottom + 20);
+        ctx.fillStyle="#000";
+        ctx.fillText(values[i].toFixed(1)+"%",x+18,y-8);
+        ctx.fillText(names[i],x,bottom+22);
     }
 }
 </script>
-
 
 </body>
 </html>
