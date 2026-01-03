@@ -1,119 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AttendFlow | Attendance Analytics Demo</title>
+<title>AttendFlow Analytics – Date-wise Attendance System</title>
 
 <style>
-*{box-sizing:border-box}
-
 body{
     margin:0;
-    font-family:"Segoe UI", Arial, sans-serif;
-    background:#eef1f6;
-    color:#1f2937;
+    font-family:Segoe UI, Arial, sans-serif;
+    background:#0f172a;
+    color:#e5e7eb;
 }
-
-/* HEADER */
 .header{
-    background:#111827;
-    color:white;
+    background:#020617;
     padding:25px;
     text-align:center;
 }
-
-.header h1{ margin:0; font-size:34px; }
-.header p{ margin-top:8px; color:#cbd5e1; }
-
-/* MAIN */
 .container{
     max-width:1200px;
     margin:30px auto;
     padding:0 20px;
 }
-
-/* CARD */
 .card{
-    background:white;
-    border-radius:14px;
+    background:#020617;
     padding:25px;
+    border-radius:14px;
     margin-bottom:30px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
-
-.card h3{ margin-top:0; }
-
-/* INPUT GRID */
-.student{
-    display:grid;
-    grid-template-columns:1fr 2fr;
-    gap:12px;
-    margin-bottom:12px;
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
 }
-
+th,td{
+    border:1px solid #334155;
+    padding:10px;
+    text-align:center;
+}
 input{
-    padding:12px;
-    border-radius:8px;
-    border:1px solid #cbd5e1;
-    font-size:14px;
+    width:110px;
+    padding:6px;
+    text-align:center;
 }
-
+.att{
+    width:60px;
+}
 button{
-    margin-top:8px;
-    padding:10px 16px;
+    margin-top:10px;
+    padding:10px 18px;
+    background:#22c55e;
+    color:#020617;
+    font-weight:bold;
     border:none;
-    border-radius:20px;
-    background:#2563eb;
-    color:white;
-    font-size:14px;
-    font-weight:600;
+    border-radius:8px;
     cursor:pointer;
 }
-
-button:hover{ background:#1d4ed8; }
-
-/* CLASSIFICATION */
+button:hover{
+    background:#16a34a;
+}
 .grid{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:repeat(3,1fr);
     gap:20px;
 }
-
 .box{
     padding:15px;
     border-radius:10px;
-    background:#f9fafb;
-    min-height:160px;
+    min-height:180px;
 }
-
-.red{border-left:6px solid #dc2626;}
-.orange{border-left:6px solid #d97706;}
-.green{border-left:6px solid #15803d;}
-
-.box h4{ margin-top:0; }
-
-/* MESSAGE PREVIEW */
-.msg-box{
-    background:#eef2ff;
-    padding:8px;
-    border-radius:6px;
+.red{background:#7f1d1d}
+.orange{background:#78350f}
+.green{background:#064e3b}
+.msg{
     font-size:13px;
-    margin:6px 0;
+    color:#fde68a;
+    margin-top:6px;
 }
-
-/* GRAPH */
+.status{
+    font-size:13px;
+    color:#86efac;
+    margin-top:4px;
+}
 canvas{
     margin-top:20px;
-    background:#f9fafb;
-    border-radius:10px;
-    padding:10px;
-}
-
-/* FOOTER */
-.footer{
-    text-align:center;
-    padding:15px;
-    color:#64748b;
-    font-size:13px;
+    background:#020617;
 }
 </style>
 </head>
@@ -121,194 +90,203 @@ canvas{
 <body>
 
 <div class="header">
-    <h1>AttendFlow Analytics</h1>
-    <p>Algorithm-Driven Attendance Pattern Detection</p>
+<h1>AttendFlow Analytics</h1>
+<p>Date-wise Attendance Pattern Detection using Sliding Window</p>
 </div>
 
 <div class="container">
 
 <!-- INPUT -->
 <div class="card">
-    <h3>1. Attendance Data Input</h3>
-    <p><b>P</b> = Present, <b>A</b> = Absent<br>
-       Example: <code>P,A,A,A,P</code></p>
+<h3>1️⃣ Enter Attendance (5 Dates)</h3>
+<p><b>P</b> = Present, <b>A</b> = Absent</p>
 
-    <div class="student">
-        <input id="name1" placeholder="Student 1 Name">
-        <input id="att1" placeholder="P,A,A,A,P">
-    </div>
-    <div class="student">
-        <input id="name2" placeholder="Student 2 Name">
-        <input id="att2" placeholder="P,P,P,A,P">
-    </div>
-    <div class="student">
-        <input id="name3" placeholder="Student 3 Name">
-        <input id="att3" placeholder="P,A,P,A,A">
-    </div>
-    <div class="student">
-        <input id="name4" placeholder="Student 4 Name">
-        <input id="att4" placeholder="P,P,P,P,P">
-    </div>
+<table>
+<tr>
+<th>Roll</th>
+<th><input type="date" id="d1"></th>
+<th><input type="date" id="d2"></th>
+<th><input type="date" id="d3"></th>
+<th><input type="date" id="d4"></th>
+<th><input type="date" id="d5"></th>
+</tr>
 
-    <button onclick="analyze()">DETECT ATTENDANCE</button>
+<tr>
+<td>101</td>
+<td><input class="att" id="101_1"></td>
+<td><input class="att" id="101_2"></td>
+<td><input class="att" id="101_3"></td>
+<td><input class="att" id="101_4"></td>
+<td><input class="att" id="101_5"></td>
+</tr>
+
+<tr>
+<td>102</td>
+<td><input class="att" id="102_1"></td>
+<td><input class="att" id="102_2"></td>
+<td><input class="att" id="102_3"></td>
+<td><input class="att" id="102_4"></td>
+<td><input class="att" id="102_5"></td>
+</tr>
+
+<tr>
+<td>103</td>
+<td><input class="att" id="103_1"></td>
+<td><input class="att" id="103_2"></td>
+<td><input class="att" id="103_3"></td>
+<td><input class="att" id="103_4"></td>
+<td><input class="att" id="103_5"></td>
+</tr>
+
+<tr>
+<td>104</td>
+<td><input class="att" id="104_1"></td>
+<td><input class="att" id="104_2"></td>
+<td><input class="att" id="104_3"></td>
+<td><input class="att" id="104_4"></td>
+<td><input class="att" id="104_5"></td>
+</tr>
+
+<tr>
+<td>105</td>
+<td><input class="att" id="105_1"></td>
+<td><input class="att" id="105_2"></td>
+<td><input class="att" id="105_3"></td>
+<td><input class="att" id="105_4"></td>
+<td><input class="att" id="105_5"></td>
+</tr>
+</table>
+
+<button onclick="analyze()">Analyze Attendance</button>
 </div>
 
-<!-- CLASSIFICATION -->
+<!-- OUTPUT -->
 <div class="card">
-    <h3>2. Attendance Classification & SMS Notification</h3>
+<h3>2️⃣ Attendance Classification & Alerts</h3>
 
-    <div class="grid">
-        <div class="box red">
-            <h4>Consecutive Absentees</h4>
-            <div id="consecutive"></div>
-        </div>
+<div class="grid">
+<div class="box red">
+<h4>Consecutive Absentees</h4>
+<div id="consecutive"></div>
+</div>
 
-        <div class="box orange">
-            <h4>Low Attendance</h4>
-            <div id="low"></div>
-        </div>
+<div class="box orange">
+<h4>Low Attendance (&lt;75%)</h4>
+<div id="low"></div>
+</div>
 
-        <div class="box green">
-            <h4>Normal Attendance</h4>
-            <div id="normal"></div>
-        </div>
-    </div>
+<div class="box green">
+<h4>Normal Attendance</h4>
+<div id="normal"></div>
+</div>
+</div>
 </div>
 
 <!-- GRAPH -->
 <div class="card">
-    <h3>3. Attendance Percentage Visualization</h3>
-    <canvas id="chart" width="1100" height="350"></canvas>
-
-    <p style="font-size:14px;color:#475569;">
-        <b>Algorithm Insight:</b><br>
-        Sliding Window (size = 3) detects consecutive absences.
-        Linear traversal computes attendance percentage.<br>
-        <b>Time:</b> O(n) &nbsp;&nbsp; <b>Space:</b> O(1)
-    </p>
+<h3>3️⃣ Attendance Percentage Graph</h3>
+<canvas id="chart" width="1000" height="300"></canvas>
 </div>
 
-</div>
-
-<div class="footer">
-DAA Course Project • Student Attendance Pattern Tracker • KLE Technological University
 </div>
 
 <script>
 function analyze(){
-    let names=[], values=[], categories=[];
+    let cons="",low="",norm="";
+    let names=[],values=[];
 
-    document.getElementById("consecutive").innerHTML="";
-    document.getElementById("low").innerHTML="";
-    document.getElementById("normal").innerHTML="";
+    let dates=[
+      d1.value,d2.value,d3.value,d4.value,d5.value
+    ];
 
-    for(let i=1;i<=4;i++){
-        let name=document.getElementById("name"+i).value || "Student "+i;
-        let s=document.getElementById("att"+i).value.toUpperCase()
-              .replace(/,/g,"").replace(/\s+/g,"");
+    ["101","102","103","104","105"].forEach(r=>{
+        let arr=[];
+        let record=[];
 
-        if(!/^[PA]+$/.test(s)) continue;
-
-        let hasAAA=false;
-        for(let j=0;j<=s.length-3;j++){
-            if(s.substring(j,j+3)==="AAA"){ hasAAA=true; break; }
+        for(let i=1;i<=5;i++){
+            let v=document.getElementById(r+"_"+i).value.toUpperCase();
+            let val=(v==="A"||v==="P")?v:"P";
+            arr.push(val);
+            record.push(`${dates[i-1]}:${val}`);
         }
 
-        let present=0;
-        for(let c of s) if(c==="P") present++;
-        let percent=(present/s.length)*100;
+        // Sliding Window AAA
+        let hasAAA=false;
+        for(let i=0;i<=arr.length-3;i++){
+            if(arr.slice(i,i+3).join("")==="AAA"){
+                hasAAA=true;
+                break;
+            }
+        }
+
+        let p=arr.filter(x=>x==="P").length;
+        let per=(p/5)*100;
 
         if(hasAAA){
-            document.getElementById("consecutive").innerHTML+=
-            studentBlock(name,percent,"Consecutive Absentee");
-            categories.push("consecutive");
+            cons+=`
+            Roll ${r}<br>${record.join(" | ")} (${per}%)<br>
+            <div class="msg">
+            SMS Preview: Consecutive absences detected for Roll ${r}
+            </div>
+            <button onclick="sendMessage('${r}')">Send Message</button>
+            <div id="status_${r}" class="status"></div><br>`;
         }
-        else if(percent<75){
-            document.getElementById("low").innerHTML+=
-            studentBlock(name,percent,"Low Attendance");
-            categories.push("low");
+        else if(per<75){
+            low+=`
+            Roll ${r}<br>${record.join(" | ")} (${per}%)<br>
+            <div class="msg">
+            SMS Preview: Attendance below 75% for Roll ${r}
+            </div>
+            <button onclick="sendMessage('${r}')">Send Message</button>
+            <div id="status_${r}" class="status"></div><br>`;
         }
         else{
-            document.getElementById("normal").innerHTML+=
-            `<b>${name}</b> (${percent.toFixed(1)}%)<hr>`;
-            categories.push("normal");
+            norm+=`Roll ${r}<br>${record.join(" | ")} (${per}%)<br><br>`;
         }
 
-        names.push(name);
-        values.push(percent);
-    }
+        names.push("R"+r);
+        values.push(per);
+    });
 
-    drawGraph(names,values,categories);
+    document.getElementById("consecutive").innerHTML=cons;
+    document.getElementById("low").innerHTML=low;
+    document.getElementById("normal").innerHTML=norm;
+
+    drawGraph(names,values);
 }
 
-function studentBlock(name,percent,category){
-    let message =
-        "Attendance Alert:\n" +
-        "Student: " + name + "\n" +
-        "Category: " + category + "\n" +
-        "Attendance: " + percent.toFixed(1) + "%\n" +
-        "Please take necessary action.";
-
-    return `
-    <b>${name}</b> (${percent.toFixed(1)}%)<br>
-
-    <div class="msg-box">
-        <b>SMS Preview:</b><br>
-        ${message.replace(/\n/g,"<br>")}
-    </div>
-
-    <button onclick="sendSMS('${name}', \`${message}\`)">
-        Send Message
-    </button>
-
-    <div id="status_${name}" style="font-size:13px;color:green;"></div>
-    <hr>`;
-}
-
-function sendSMS(name,message){
-    document.getElementById("status_"+name).innerHTML =
+function sendMessage(roll){
+    document.getElementById("status_"+roll).innerHTML =
         "✅ Message Sent Successfully";
 
-    alert("SMS SENT (Demo):\n\n" + message);
+    alert(
+        "SMS SENT (Demo)\n\n" +
+        "Alert: Attendance issue detected for Roll " + roll +
+        ". Please take necessary action."
+    );
 }
 
-/* GRAPH */
-function drawGraph(names,values,categories){
+function drawGraph(names,vals){
     let c=document.getElementById("chart");
     let ctx=c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
 
-    let left=90, right=1050, top=50, bottom=300;
-    let height=bottom-top;
+    ctx.strokeStyle="#94a3b8";
+    ctx.beginPath();
+    ctx.moveTo(50,20);
+    ctx.lineTo(50,260);
+    ctx.lineTo(950,260);
+    ctx.stroke();
 
-    ctx.strokeStyle="#000"; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(left,top); ctx.lineTo(left,bottom); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(left,bottom); ctx.lineTo(right,bottom); ctx.stroke();
+    let x=100,w=60,g=80;
+    ctx.fillStyle="#22c55e";
 
-    ctx.font="13px Arial"; ctx.fillStyle="#000";
-    for(let i=0;i<=100;i+=25){
-        let y=bottom-(i/100)*height;
-        ctx.fillText(i+"%",40,y+5);
-        ctx.strokeStyle="#ddd";
-        ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(right,y); ctx.stroke();
-    }
-
-    let barWidth=80, gap=70;
-    for(let i=0;i<values.length;i++){
-        let h=(values[i]/100)*height;
-        let x=left+40+i*(barWidth+gap);
-        let y=bottom-h;
-
-        let color=
-            categories[i]==="consecutive"?"#dc2626":
-            categories[i]==="low"?"#d97706":"#15803d";
-
-        ctx.fillStyle=color;
-        ctx.fillRect(x,y,barWidth,h);
-
-        ctx.fillStyle="#000";
-        ctx.fillText(values[i].toFixed(1)+"%",x+18,y-8);
-        ctx.fillText(names[i],x,bottom+22);
+    for(let i=0;i<vals.length;i++){
+        let h=(vals[i]/100)*180;
+        ctx.fillRect(x,260-h,w,h);
+        ctx.fillText(vals[i]+"%",x,250-h);
+        ctx.fillText(names[i],x,280);
+        x+=w+g;
     }
 }
 </script>
